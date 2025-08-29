@@ -4,16 +4,16 @@ use-chat-submit
 
 <div align="center">
 
-<img src="./cover.png" alt="use-chat-submit" width="640" />
+<img src="./demo.gif" alt="use-chat-submit" width="720" />
 
 </div>
 
 
-A small React Hook that implements the chat input behaviors everyone expects:
+A small React Hook that brings the chat input behavior you’d expect:
 1. Enter inserts a line break; Cmd/Ctrl+Enter submits
 2. Shift+Enter inserts a line break; Enter submits
 
-It prevents accidental submissions while composing with an IME, composes safely with your own handlers, and normalizes Cmd vs. Ctrl differences across platforms.
+It prevents accidental submissions while using an IME, works seamlessly with your own handlers, and normalizes Cmd vs. Ctrl differences across platforms.
 
 [**Demo**](https://catnose.me/use-chat-submit)
 
@@ -65,7 +65,7 @@ export function ChatBox() {
 }
 ```
 
-`getTextareaProps()` only wires `onKeyDown` and `ref`, so you can pass any other props outside of it.
+`getTextareaProps()` only attaches `onKeyDown` and `ref`, so you can freely pass any other props yourself.
 
 ```tsx
 // Equivalent behavior
@@ -85,12 +85,12 @@ export function ChatBox() {
 
 - Never submits while an IME is composing (two-step check with `KeyboardEvent.isComposing` on keydown/keyup).
 - `<textarea>` does not submit forms implicitly on Enter, so you don’t need to block default form behavior.
-- For IME-heavy languages like Chinese or Japanese, enabling `mod-enter` is recommended.
+- For languages that rely heavily on IME (like Chinese or Japanese), using `mod-enter` is recommended.
 
 ## Why It Helps
 
 - Safely composes with your handlers (user → library). Respects `event.defaultPrevented` and `event.isPropagationStopped()`.
-- Smooths over Safari/Chrome differences in IME composition ordering. Detects reliably using native keydown/keyup events.
+- Smooths out differences between Safari and Chrome in IME composition handling. Detects reliably using native keydown/keyup events.
 - Normalizes Cmd vs. Ctrl with `modKey: "auto"`. Also exposes platform-aware shortcut hints for your UI.
 
 
@@ -104,7 +104,7 @@ export function ChatBox() {
 | --- | --- | --- | --- |
 | `onSubmit(value, ctx)` | `(value: string, ctx: { target: HTMLTextAreaElement }) => void` | — (required) | Called on submit. Access the underlying textarea via `ctx.target`. |
 | `mode` | `"mod-enter" | "enter"` | `"mod-enter"` | Key mapping behavior for Enter/Shift+Enter/Cmd/Ctrl+Enter. |
-| `modKey` | `"meta" | "ctrl" | "auto"` | `"auto"` (recommended) | Which modifier counts as “mod”. Auto = Cmd on macOS, Ctrl elsewhere. |
+| `modKey` | `"meta" | "ctrl" | "auto"` | `"auto"` (recommended) | Which modifier counts as “mod”. Auto = Cmd (⌘) on macOS, Ctrl elsewhere. |
 | `allowEmptySubmit` | `boolean` | `false` | Allow submitting an empty string. |
 | `stopPropagation` | `boolean` | `false` | Call `e.stopPropagation()` when submitting. |
 | `enabled` | `boolean | "non-mobile"` | `true` | Enable the behavior. `"non-mobile"` enables only on non‑mobile devices. |
@@ -132,7 +132,7 @@ export function ChatBox() {
 
 ## Limitations & Support
 
-- Supported element: `<textarea>` only (`<input>` does not support multi-line input)
+- Only `<textarea>` is supported (`<input>` doesn’t allow multi-line input)
 - React 19+ (peer dependency)
 
 

@@ -37,7 +37,7 @@ export function App() {
   return (
     <div
       style={{
-        maxWidth: 560,
+        maxWidth: 500,
         margin: "36px auto",
         paddingInline: "15px",
         fontFamily: "system-ui, sans-serif",
@@ -72,25 +72,24 @@ export function App() {
         style={{
           background: "#f5f5f5",
           padding: 15,
-          marginTop: 24,
+          marginTop: 42,
           borderRadius: 15,
         }}
       >
-        <h2
-          style={{
-            fontSize: 18,
-            margin: 0,
-          }}
-        >
-          Enter to
-        </h2>
         <div
           style={{
             display: "flex",
             gap: 10,
-            marginTop: 8,
           }}
         >
+          <h2
+            style={{
+              fontSize: 17,
+              margin: 0,
+            }}
+          >
+            Enter =
+          </h2>
           <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <input
               type="radio"
@@ -99,7 +98,7 @@ export function App() {
               checked={mode === "enter"}
               onChange={() => setMode("enter")}
             />
-            <strong>submit</strong>
+            <strong>Submit</strong>
           </label>
           <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <input
@@ -109,7 +108,7 @@ export function App() {
               checked={mode === "mod-enter"}
               onChange={() => setMode("mod-enter")}
             />
-            <strong>insert line break</strong>
+            <strong>Line break</strong>
           </label>
         </div>
 
@@ -144,8 +143,32 @@ export function App() {
             >
               {shortcutHintLabels && (
                 <div style={{ color: "#666", fontSize: 12 }}>
-                  Submit: {shortcutHintLabels.submit.keys.join("+")} / Line
-                  break: {shortcutHintLabels.lineBreak.keys.join("+")}
+                  <div>
+                    <strong
+                      style={{
+                        display: "inline-flex",
+                        width: 45,
+                      }}
+                    >
+                      Submit
+                    </strong>
+                    : {shortcutHintLabels.submit.keys.join("+")}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 5,
+                    }}
+                  >
+                    <strong
+                      style={{
+                        display: "inline-flex",
+                        width: 45,
+                      }}
+                    >
+                      Break
+                    </strong>
+                    : {shortcutHintLabels.lineBreak.keys.join("+")}
+                  </div>
                 </div>
               )}
               <select
@@ -167,7 +190,7 @@ export function App() {
       </div>
 
       <ul style={{ padding: 0, listStyle: "none" }}>
-        {messages.map((m, i) => (
+        {[...messages].reverse().map((m, i) => (
           <li
             key={i}
             style={{
