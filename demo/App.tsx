@@ -66,7 +66,9 @@ export function App() {
       >
         <a href="https://github.com/catnose99/use-chat-submit">GitHub</a>/
         <a href="https://www.npmjs.com/package/use-submit-chat">npm</a>/
-        <a href="TODO:">Demo Code</a>
+        <a href="https://github.com/catnose99/use-chat-submit/blob/main/demo/App.tsx">
+          Demo Code
+        </a>
       </div>
       <div
         style={{

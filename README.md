@@ -1,10 +1,10 @@
 <h1 align="center">
-use-chat-submit 
+useChatSubmit
 </h1>
 
 <div align="center">
 
-<img src="./demo.gif" alt="use-chat-submit" width="720" />
+<img src="./demo.gif" alt="use-chat-submit" width="520" />
 
 </div>
 
