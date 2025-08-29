@@ -54,7 +54,7 @@ export function App() {
             fontSize: 16,
           }}
         >
-          use-submit-chat
+          use-chat-submit
         </code>
       </div>
       <div
@@ -65,7 +65,7 @@ export function App() {
         }}
       >
         <a href="https://github.com/catnose99/use-chat-submit">GitHub</a>/
-        <a href="https://www.npmjs.com/package/use-submit-chat">npm</a>/
+        <a href="https://www.npmjs.com/package/use-chat-submit">npm</a>/
         <a href="https://github.com/catnose99/use-chat-submit/blob/main/demo/App.tsx">
           Demo Code
         </a>
