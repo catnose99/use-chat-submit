@@ -1,5 +1,6 @@
 {
   "name": "use-chat-submit",
+  "private": false,
   "version": "1.0.0",
   "description": "React hook to handle chat textarea submit behaviors (Enter vs Mod+Enter) with IME-safe handling.",
   "type": "module",
@@ -20,7 +21,7 @@
     "build": "tsup",
     "dev": "vite",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build",
+    "publish": "pnpm run build && pnpm publish",
     "lint": "eslint src/useChatSubmit.ts",
     "demo:build": "vite build",
     "demo:preview": "vite preview --open"
