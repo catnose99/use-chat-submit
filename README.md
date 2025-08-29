@@ -103,12 +103,12 @@ export function ChatBox() {
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `onSubmit(value, ctx)` | `(value: string, ctx: { target: HTMLTextAreaElement }) => void` | — (required) | Called on submit. Access the underlying textarea via `ctx.target`. |
-| `mode` | `"mod-enter" | "enter"` | `"mod-enter"` | Key mapping behavior for Enter/Shift+Enter/Cmd/Ctrl+Enter. |
-| `modKey` | `"meta" | "ctrl" | "auto"` | `"auto"` (recommended) | Which modifier counts as “mod”. Auto = Cmd (⌘) on macOS, Ctrl elsewhere. |
+| `mode` | `"mod-enter"` | `"enter"` | `"mod-enter"` | Key mapping behavior for Enter/Shift+Enter/Cmd/Ctrl+Enter. |
+| `modKey` | `"meta"` | `"ctrl"` | `"auto"` | `"auto"` (recommended) | Which modifier counts as “mod”. Auto = Cmd (⌘) on macOS, Ctrl elsewhere. |
 | `allowEmptySubmit` | `boolean` | `false` | Allow submitting an empty string. |
 | `stopPropagation` | `boolean` | `false` | Call `e.stopPropagation()` when submitting. |
-| `enabled` | `boolean | "non-mobile"` | `true` | Enable the behavior. `"non-mobile"` enables only on non‑mobile devices. |
-| `shortcutHintLabelStyle` | `"auto" | "symbols" | "text"` | `"auto"` | Style for shortcut hint labels. |
+| `enabled` | `boolean` | `"non-mobile"` | `true` | Enable the behavior. `"non-mobile"` enables only on non‑mobile devices. |
+| `shortcutHintLabelStyle` | `"auto"` | `"symbols"` | `"text"` | `"auto"` | Style for shortcut hint labels. |
 | `userAgentHint` | `string` | — | Optional UA string for SSR to reduce detection lag. |
 
 ### Return Value (`UseChatSubmitReturn`)
