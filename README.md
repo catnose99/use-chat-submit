@@ -4,7 +4,7 @@ useChatSubmit
 
 <div align="center">
 
-<img src="./demo.gif" alt="use-chat-submit" width="520" />
+<img src="https://raw.githubusercontent.com/catnose99/use-chat-submit/c0b2bd2127b2e0eb77c2124a7a1e30dd1d7bf590/demo.gif" alt="use-chat-submit" width="520" />
 
 </div>
 

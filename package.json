@@ -22,7 +22,6 @@
     "dev": "vite",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run lint && pnpm run typecheck && pnpm build",
-    "publish": "pnpm publish",
     "lint": "eslint src/useChatSubmit.ts",
     "demo:build": "vite build",
     "demo:preview": "vite preview --open"
