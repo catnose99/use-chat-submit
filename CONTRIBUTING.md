@@ -10,4 +10,6 @@ This repository includes a simple demo built with Vite. During development, run 
 The demo directly imports `../src` from within the `demo/` directory. The code published to the package is built with `pnpm run build` and output to `dist/`.
 
 ## Publish
-TODO:
+```bash
+pnpm publish
+```
