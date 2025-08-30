@@ -165,7 +165,7 @@ export function useChatSubmit(
     modKey = "auto",
     allowEmptySubmit = false,
     stopPropagation = false,
-    enabled = true,
+    enabled = "non-mobile",
     shortcutHintLabelStyle = "auto",
     userAgentHint,
   } = options;
