@@ -220,14 +220,16 @@ export function useChatSubmit(
   );
 
   const doSubmit = React.useCallback(() => {
-    if (!isEnabled) return;
+    /**
+     * allow submit even when isEnabled is false
+     */
     const el = textareaRef.current;
     if (!el) return;
     if (el.disabled || el.readOnly) return;
     const value = el.value ?? "";
     if (!allowEmptySubmit && value.trim() === "") return;
     onSubmit(value, { target: el });
-  }, [allowEmptySubmit, isEnabled, onSubmit]);
+  }, [allowEmptySubmit, onSubmit]);
 
   const onKeyDownLib = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
