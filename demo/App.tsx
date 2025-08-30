@@ -9,7 +9,7 @@ export function App() {
   const testRef = React.useRef<HTMLTextAreaElement>(null);
   const [hintLabelStyle, setHintLabelStyle] =
     React.useState<ShortcutHintLabelStyle>("auto");
-  const [enabled, setEnabled] = React.useState<EnabledOption>(true);
+  const [enabled, setEnabled] = React.useState<EnabledOption>("non-mobile");
 
   const { getTextareaProps, triggerSubmit, shortcutHintLabels, isEnabled } =
     useChatSubmit({
