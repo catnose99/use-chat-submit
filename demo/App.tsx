@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useChatSubmit, type SubmitMode } from "../src";
+import { EnabledOption, useChatSubmit, type SubmitMode } from "../src";
 import { ShortcutHintLabelStyle } from "../src/utils";
 
 export function App() {
@@ -9,6 +9,7 @@ export function App() {
   const testRef = React.useRef<HTMLTextAreaElement>(null);
   const [hintLabelStyle, setHintLabelStyle] =
     React.useState<ShortcutHintLabelStyle>("auto");
+  const [enabled, setEnabled] = React.useState<EnabledOption>(true);
 
   const { getTextareaProps, triggerSubmit, shortcutHintLabels, isEnabled } =
     useChatSubmit({
@@ -20,6 +21,7 @@ export function App() {
       mode,
       modKey: "auto",
       shortcutHintLabelStyle: hintLabelStyle,
+      enabled,
     });
 
   const placeholder = React.useMemo(() => {
@@ -173,20 +175,38 @@ export function App() {
                   </div>
                 </div>
               )}
-              <select
-                value={hintLabelStyle}
-                onChange={(e) =>
-                  setHintLabelStyle(e.target.value as ShortcutHintLabelStyle)
-                }
-              >
-                <option value="auto">auto</option>
-                <option value="symbols">symbol</option>
-                <option value="text">text</option>
-              </select>
             </div>
             <button type="button" onClick={triggerSubmit}>
               Submit
             </button>
+          </div>
+          <div>
+            <h3
+              style={{
+                margin: "20px 0 0",
+                fontSize: 16,
+              }}
+            >
+              Options
+            </h3>
+            <OptionsRow
+              id="hint-label-style"
+              label={"hintLabelStyle"}
+              options={["auto", "symbols", "text"]}
+              value={hintLabelStyle}
+              onChange={setHintLabelStyle}
+            />
+            <OptionsRow
+              id="enabled"
+              label={"enabled"}
+              options={["true", "false", "non-mobile"]}
+              value={enabled.toString() as "true" | "false" | "non-mobile"}
+              onChange={(value) =>
+                setEnabled(
+                  value === "true" ? true : value === "false" ? false : value
+                )
+              }
+            />
           </div>
         </div>
       </div>
@@ -206,6 +226,51 @@ export function App() {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function OptionsRow<T extends string>({
+  label,
+  options,
+  value,
+  onChange,
+  id,
+}: {
+  label: string;
+  options: T[];
+  value: T;
+  id: string;
+  onChange: (value: T) => void;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 5,
+        marginTop: 8,
+      }}
+    >
+      <label
+        htmlFor={id}
+        style={{
+          fontSize: 13,
+        }}
+      >
+        {label}:
+      </label>
+      <select
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value as T)}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
