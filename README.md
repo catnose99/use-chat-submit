@@ -10,8 +10,8 @@ useChatSubmit
 
 
 A small React Hook that brings the chat input behavior you’d expect:
-1. `Enter` inserts a line break; `Cmd/Ctrl` + `Enter` submits
-2. `Shift` + ` Enter` inserts a line break; `Enter` submits
+1. `Enter` to submit. `Shift` + `Enter` to insert a line break.
+2. `Cmd/Ctrl` + `Enter` to submit. `Enter` to insert a line break (preferred for Japanese input 🇯🇵).
 
 It prevents accidental submissions while using an IME, works seamlessly with your own handlers, and normalizes `Cmd` vs. `Ctrl` differences across platforms.
 
