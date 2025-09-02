@@ -7,5 +7,5 @@ routes = [
 
 [assets]
 # nextのstatic exportの出力先ディレクトリを指定
-directory = "./dist-demo"
+directory = "./demo/dist"
 not_found_handling = "404-page"
