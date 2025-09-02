@@ -1,0 +1,11 @@
+name = "use-chat-submit-demo"
+compatibility_date = "2025-09-02"
+
+routes = [
+  { pattern = "catnose.me/use-chat-submit*", zone_name = "catnose.me" },
+]
+
+[assets]
+# nextのstatic exportの出力先ディレクトリを指定
+directory = "./dist-demo"
+not_found_handling = "404-page"
