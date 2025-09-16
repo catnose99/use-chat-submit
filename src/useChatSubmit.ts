@@ -207,13 +207,33 @@ export function useChatSubmit(
         }
       };
 
+      const onNativeCompositionStart = () => {
+        composingRef.current = true;
+      };
+
+      const clearComposition = () => {
+        // IME may skip keyup before compositionend; ensure we always reset
+        composingRef.current = false;
+      };
+
+      // keydown handling: detect IME state early when compositionstart is delayed
       node.addEventListener("keydown", onNativeKeyDown);
+      // keyup handling: fallback to reset after physical key release (Safari quirk)
       node.addEventListener("keyup", onNativeKeyUp);
+      // compositionstart: guaranteed signal when IME begins (covers virtual keyboards)
+      node.addEventListener("compositionstart", onNativeCompositionStart);
+      // compositionend: primary reset when IME commits the text
+      node.addEventListener("compositionend", clearComposition);
+      // compositioncancel: ensure reset even if composition is aborted
+      node.addEventListener("compositioncancel", clearComposition);
 
       // React 19: return cleanup from ref callback
       return () => {
         node.removeEventListener("keydown", onNativeKeyDown);
         node.removeEventListener("keyup", onNativeKeyUp);
+        node.removeEventListener("compositionstart", onNativeCompositionStart);
+        node.removeEventListener("compositionend", clearComposition);
+        node.removeEventListener("compositioncancel", clearComposition);
       };
     },
     [isEnabled]
@@ -235,7 +255,8 @@ export function useChatSubmit(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (!isEnabled) return;
       if (e.repeat) return; // avoid repeated firing on key hold
-      if (composingRef.current) return; // do not submit during IME composition
+      if (composingRef.current) return;
+      // do not submit during IME composition
 
       if (e.key !== "Enter") return;
 
