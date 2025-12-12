@@ -195,8 +195,12 @@ export function useChatSubmit(
 
       const onNativeKeyDown = (e: KeyboardEvent) => {
         // Chrome: compositionstart may occur after keyup; detect composing at keydown
-        // Safari/WebKit: isComposing can be false on the Enter that commits IME,
-        // but keyCode/which stays 229 while IME is processing.
+        // Safari/WebKit IME quirk:
+        // When committing conversion with Enter, `compositionend` may fire *before*
+        // the Enter `keydown`. In that case `isComposing` is already false and
+        // `key` is "Enter", so naive checks treat it as a normal Enter and submit
+        // in `mode: "enter"`. WebKit still reports IME processing via
+        // keyCode/which === 229, so we use that as a fallback guard.
         if (
           e.isComposing ||
           e.key === "Process" ||
