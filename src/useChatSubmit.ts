@@ -195,7 +195,14 @@ export function useChatSubmit(
 
       const onNativeKeyDown = (e: KeyboardEvent) => {
         // Chrome: compositionstart may occur after keyup; detect composing at keydown
-        if (e.isComposing || (e as any).key === "Process") {
+        // Safari/WebKit: isComposing can be false on the Enter that commits IME,
+        // but keyCode/which stays 229 while IME is processing.
+        if (
+          e.isComposing ||
+          e.key === "Process" ||
+          e.keyCode === 229 ||
+          e.which === 229
+        ) {
           composingRef.current = true;
         }
       };
@@ -255,8 +262,17 @@ export function useChatSubmit(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (!isEnabled) return;
       if (e.repeat) return; // avoid repeated firing on key hold
-      if (composingRef.current) return;
-      // do not submit during IME composition
+      const native = e.nativeEvent as KeyboardEvent;
+      if (
+        composingRef.current ||
+        native.isComposing ||
+        native.key === "Process" ||
+        native.keyCode === 229 ||
+        native.which === 229
+      ) {
+        return;
+      }
+      // do not submit during IME composition (incl. Safari commit Enter)
 
       if (e.key !== "Enter") return;
 
