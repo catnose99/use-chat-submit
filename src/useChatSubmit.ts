@@ -85,6 +85,9 @@ export type UseChatSubmitReturn = {
    * Whether it is enabled (internal state)
    */
   isEnabled: boolean;
+
+  /** IME composition state ref (read-only) */
+  isComposingRef: React.RefObject<boolean>;
 };
 
 function callUserThenLib<
@@ -176,7 +179,7 @@ export function useChatSubmit(
   const resolvedMod = resolveModKey(modKey, isApple);
 
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-  const composingRef = React.useRef(false);
+  const isComposingRef = React.useRef(false);
 
   const isEnabled = React.useMemo(() => {
     if (enabled === "non-mobile") {
@@ -207,24 +210,24 @@ export function useChatSubmit(
           e.keyCode === 229 ||
           e.which === 229
         ) {
-          composingRef.current = true;
+          isComposingRef.current = true;
         }
       };
 
       const onNativeKeyUp = (e: KeyboardEvent) => {
         // Safari: compositionend may fire earlier; confirm isComposing=false at keyup
         if (!e.isComposing) {
-          composingRef.current = false;
+          isComposingRef.current = false;
         }
       };
 
       const onNativeCompositionStart = () => {
-        composingRef.current = true;
+        isComposingRef.current = true;
       };
 
       const clearComposition = () => {
         // IME may skip keyup before compositionend; ensure we always reset
-        composingRef.current = false;
+        isComposingRef.current = false;
       };
 
       // keydown handling: detect IME state early when compositionstart is delayed
@@ -268,7 +271,7 @@ export function useChatSubmit(
       if (e.repeat) return; // avoid repeated firing on key hold
       const native = e.nativeEvent as KeyboardEvent;
       if (
-        composingRef.current ||
+        isComposingRef.current ||
         native.isComposing ||
         native.key === "Process" ||
         native.keyCode === 229 ||
@@ -379,6 +382,7 @@ export function useChatSubmit(
     triggerSubmit: doSubmit,
     shortcutHintLabels,
     isEnabled,
+    isComposingRef,
   };
 }
 
