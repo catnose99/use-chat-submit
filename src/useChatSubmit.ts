@@ -253,6 +253,41 @@ export function useChatSubmit(
     [isEnabled]
   );
 
+  const mergedRefCache = React.useRef<{
+    userRef: undefined | React.Ref<HTMLTextAreaElement>;
+    isEnabled: boolean;
+    instrumentedRef: undefined | React.RefCallback<HTMLTextAreaElement>;
+    ref: undefined | React.RefCallback<HTMLTextAreaElement>;
+  }>({
+    userRef: undefined,
+    isEnabled: false,
+    instrumentedRef: undefined,
+    ref: undefined,
+  });
+
+  const getMergedRef = React.useCallback(
+    (userRef: undefined | React.Ref<HTMLTextAreaElement>) => {
+      const cache = mergedRefCache.current;
+      if (
+        cache.ref &&
+        cache.userRef === userRef &&
+        cache.isEnabled === isEnabled &&
+        cache.instrumentedRef === instrumentedRef
+      ) {
+        return cache.ref;
+      }
+      const ref = isEnabled
+        ? composeRefs(userRef, textareaRef, instrumentedRef)
+        : composeRefs(userRef, textareaRef);
+      cache.userRef = userRef;
+      cache.isEnabled = isEnabled;
+      cache.instrumentedRef = instrumentedRef;
+      cache.ref = ref;
+      return ref;
+    },
+    [instrumentedRef, isEnabled, textareaRef]
+  );
+
   const doSubmit = React.useCallback(() => {
     /**
      * allow submit even when isEnabled is false
@@ -320,7 +355,7 @@ export function useChatSubmit(
         return {
           ...rest,
           onKeyDown: onKeyDownUser,
-          ref: composeRefs(userRef, textareaRef),
+          ref: getMergedRef(userRef),
         };
       }
 
@@ -329,10 +364,10 @@ export function useChatSubmit(
       return {
         ...rest,
         onKeyDown,
-        ref: composeRefs(userRef, textareaRef, instrumentedRef),
+        ref: getMergedRef(userRef),
       };
     },
-    [onKeyDownLib, isEnabled, instrumentedRef]
+    [getMergedRef, onKeyDownLib, isEnabled]
   );
 
   const shortcutHintLabels = React.useMemo<
