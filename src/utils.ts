@@ -71,8 +71,7 @@ export function beautifyKeyText({
     case "enter":
       return isApple && hintLabelStyle === "symbols" ? "⏎" : "Enter";
     default: {
-      const _exhaustiveCheck: never = key;
-      return key;
+      return key satisfies never; // exhaustive check
     }
   }
 }
