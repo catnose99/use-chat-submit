@@ -197,25 +197,46 @@ export function useChatSubmit(
       if (!isEnabled) return;
 
       const onNativeKeyDown = (e: KeyboardEvent) => {
-        // Chrome: compositionstart may occur after keyup; detect composing at keydown
-        // Safari/WebKit IME quirk:
-        // When committing conversion with Enter, `compositionend` may fire *before*
-        // the Enter `keydown`. In that case `isComposing` is already false and
-        // `key` is "Enter", so naive checks treat it as a normal Enter and submit
-        // in `mode: "enter"`. WebKit still reports IME processing via
-        // keyCode/which === 229, so we use that as a fallback guard.
-        if (
+        // Re-evaluate the composing flag on *every* keydown, using only the
+        // evidence carried by the event itself (isComposing / "Process" /
+        // keyCode 229). A keydown with none of these markers means the IME is
+        // no longer processing, so the flag must be cleared here.
+        //
+        // Why unconditional assignment instead of "set true and reset on
+        // keyup": WebKit gives no reliable keyup after an IME commit.
+        // Measured order when committing a conversion with Enter
+        // (macOS WebKit + Japanese IME):
+        //   keyup   Enter keyCode=13  isComposing=true   <- keyup fires FIRST
+        //   input   (deleteCompositionText / insertFromComposition)
+        //   compositionend
+        //   keydown Enter keyCode=229 isComposing=false  <- fires LAST, and no
+        //                                                   keyup follows it
+        // On iOS, tapping the commit button fires no key events at all and
+        // compositionend can be delayed until the next interaction. So the
+        // keyup may come before the keydown, come with isComposing=true, or
+        // never come — a "set true, reset on keyup" scheme leaves the flag
+        // stuck at true and swallows the next Enter in `mode: "enter"`
+        // (and the next Mod+Enter in `mode: "mod-enter"`).
+        //
+        // With unconditional assignment the flag is self-healing: whatever
+        // stale value it holds, the next clean keydown overwrites it before
+        // React's delegated onKeyDown runs (this listener is attached to the
+        // textarea node itself, i.e. target phase, so it always executes
+        // before React's root-delegated handlers — do not move this
+        // registration to root delegation or the ordering guarantee breaks).
+        // The commit Enter itself is still blocked twice: here (keyCode 229
+        // sets the flag) and by onKeyDownLib's direct native-event checks.
+        isComposingRef.current =
           e.isComposing ||
           e.key === "Process" ||
           e.keyCode === 229 ||
-          e.which === 229
-        ) {
-          isComposingRef.current = true;
-        }
+          e.which === 229;
       };
 
       const onNativeKeyUp = (e: KeyboardEvent) => {
-        // Safari: compositionend may fire earlier; confirm isComposing=false at keyup
+        // Extra safety net: clear the flag once a key is released outside
+        // composition. keydown already self-heals (see onNativeKeyDown), but
+        // this also covers consumers reading isComposingRef between events.
         if (!e.isComposing) {
           isComposingRef.current = false;
         }
