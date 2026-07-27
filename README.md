@@ -22,7 +22,7 @@ It prevents accidental submissions while using an IME, works seamlessly with you
 - Works smoothly with IME languages (e.g., Japanese, Chinese)
 - Zero dependencies
 - Supports React 19+
-- Just 1.5 KB gzipped 🚀
+- Just 1.7 KB gzipped 🚀
 
 
 ## Installation
